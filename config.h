@@ -6,7 +6,7 @@ static const unsigned int gappx     = 10;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "JetBrains Mono:size=12" };
+static const char *fonts[]          = { "JetBrains Mono:size=12", "JoyPixels:pixelsize=12:antialias=true:autohint=true"};
 static const char dmenufont[]       = "JetBrains Mono:size=12";
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
@@ -28,8 +28,11 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+	/* class      instance    title                     tags mask     isfloating   monitor */
+	{ "Gimp",     NULL,       NULL,                     0,            1,           -1 },
+	{ NULL,       NULL,       "Picture-in-Picture",     ~0,           1,           -1 },
+	{ NULL,       NULL,       "Library",                0,            1,           -1 },
+	{ "Msgcompose",    NULL,  NULL,                     0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -103,16 +106,17 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
     { MODKEY|ShiftMask,             XK_r,      quit,           {0} },
     { MODKEY|ShiftMask,             XK_q,      spawn,          SHCMD("killall xinit") },
-    { 0, XF86XK_AudioMute,                     spawn,          SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
-    { 0, XF86XK_AudioRaiseVolume,              spawn,          SHCMD("pamixer --allow-boost -i 3; kill -34 $(cat ~/.cache/pidofbar)") },
-    { 0, XF86XK_AudioLowerVolume,              spawn,          SHCMD("pamixer --allow-boost -d 3; kill -34 $(cat ~/.cache/pidofbar)") },
-    { ALTKEY,                       XK_m,      spawn,          SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
-    { ALTKEY,                       XK_Up,     spawn,          SHCMD("pamixer --allow-boost -i 3; kill -34 $(cat ~/.cache/pidofbar)") },
-    { ALTKEY,                       XK_Down,   spawn,          SHCMD("pamixer --allow-boost -d 3; kill -34 $(cat ~/.cache/pidofbar)") },
+    { 0, XF86XK_AudioMute,                     spawn,          SHCMD("pamixer -t") },
+    { 0, XF86XK_AudioRaiseVolume,              spawn,          SHCMD("pamixer -i 1") },
+    { 0, XF86XK_AudioLowerVolume,              spawn,          SHCMD("pamixer -d 1") },
+    { ALTKEY,                       XK_m,      spawn,          SHCMD("pamixer -t") },
+    { ALTKEY,                       XK_Up,     spawn,          SHCMD("pamixer -i 1") },
+    { ALTKEY,                       XK_Down,   spawn,          SHCMD("pamixer -d 1") },
     { 0, XF86XK_MonBrightnessUp,               spawn,          SHCMD("brightnessctl s 10%+") },
     { 0, XF86XK_MonBrightnessDown,             spawn,          SHCMD("brightnessctl s 10%-") },
     { ControlMask|ALTKEY,           XK_l,      spawn,          SHCMD("loginctl lock-session") },
     { 0,                            XK_Print,  spawn,          SHCMD("maim ~/pix/Screenshot_from_$(date +%F_%k-%M-%S).png") },
+    { ShiftMask,                            XK_Print,  spawn,  SHCMD("maim -s ~/pix/Screenshot_from_$(date +%F_%k-%M-%S).png") },
 
 };
 
