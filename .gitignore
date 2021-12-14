@@ -1,0 +1,8 @@
+.gitignore
+*.orig
+*.rej
+patch
+util.o
+dwm
+dwm.o
+drw.o
